@@ -657,7 +657,9 @@ class Othello_Board():
                 print('coords: ', coords);
                 row = coords[0]
                 column = coords[1]
-                self.board[20] = color
+                x = self.board[row][column]
+                print(x);
+                self.board[row][column] = color
                 print('test position','\n')
                 print(self.board);
                 
