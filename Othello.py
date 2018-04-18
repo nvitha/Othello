@@ -17,9 +17,14 @@ import random
 
 def get_start_state(): # just useful for building the state
 	blanks = list(' '*8) # easier for me to build these using a string then convert to 
+	blanks2 = copy.deepcopy(blanks)
+	blanks3 = copy.deepcopy(blanks)
+	blanks4 = copy.deepcopy(blanks)
+	blanks5 = copy.deepcopy(blanks)
+	blanks6 = copy.deepcopy(blanks)
 	row3 = list('   wb   ')
 	row4 = list('   bw   ')
-	return [blanks,blanks,blanks,row3,row4,blanks,blanks,blanks]
+	return [blanks,blanks2,blanks3,row3,row4,blanks4,blanks5,blanks6]
 
 class Othello_Board():
 	board = [[]]
@@ -28,7 +33,7 @@ class Othello_Board():
 	player_white = False
 	white_moved = True
 	black_moved = True
-	def __init__(self, _board):
+	def __init__(self, _board): #initialize the board configuration
 		self.board = copy.deepcopy(_board)
 		self.whites = [(3,3),(4,4)]
 		self.blacks = [(3,4),(4,3)]
@@ -36,16 +41,16 @@ class Othello_Board():
 		self.black_moved = True
 		self.previous_board = copy.deepcopy(_board)
 
-	def side_selection(self):
+	def side_selection(self): #select which side 
 		self.player_white = True
 
-		choice = raw_input("Do you want to be black? (y)es/(n)o\n")
+		choice = raw_input("Do you want to be white? (y)es/(n)o\n")
 		if ((choice.lower() == "y") or (choice.lower() == "yes")):
-			self.player_white = False
-			print "Player is playing black"
-		elif ((choice.lower() == "n") or (choice.lower() == "no")):
 			self.player_white = True
-			print "AI is playing black"
+			print "Player is playing white"
+		elif ((choice.lower() == "n") or (choice.lower() == "no")):
+			self.player_white = False
+			print "AI is playing white"
 		else:
 			print "You have not selected yes or no."	
 			print "Exiting program now."
@@ -598,6 +603,7 @@ class Othello_Board():
 			self.white_moved = self.white_turn()
 			self.black_moved = self.black_turn()
 			self.print_board()
+			return
 
 
 	def white_turn(self):
@@ -641,10 +647,31 @@ class Othello_Board():
 				counter +=1
 		return False
 
+	def find_colors(self):
+		blacks = []
+		whites = []
+		row_num = 0
+		col_num = 0
+		for row in self.board:
+			for color in row:
+				if color == 'w':
+					whites.append((row_num,col_num))
+				elif color == 'b':
+					blacks.append((row_num,col_num))
+				col_num += 1
+			row_num +=1
+		return 
+		
+
+
 	def effect_turn(self, color, coords):
 		row = coords[0]
 		column = coords[1]
+		print "Before Board"
+		self.print_board()
+
 		self.board[row][column] = color
+
 		tl,tl_changed = self.up_left(color,coords)
 		top,top_changed = self.up(color, coords)
 		tr,tr_changed = self.up_right(color, coords)
@@ -655,7 +682,6 @@ class Othello_Board():
 		br,br_changed = self.bot_right(color,coords)
 		total_changed = tl_changed + top_changed + tr_changed + left_changed + right_changed + bl_changed + bot_changed + br_changed
 		print "total changed: " + str(total_changed)
-
 
 
 #def runner(board):
