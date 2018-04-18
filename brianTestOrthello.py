@@ -9,6 +9,8 @@ CPSC 427
 
 
 '''
+
+
 import copy
 import random
 
@@ -51,7 +53,6 @@ class Othello_Board():
                         return
 
         def print_board(self):
-                print(self.board);
                 row = 0
                 column = 0
                 print (' ', end = ' ')
@@ -595,10 +596,9 @@ class Othello_Board():
 
         def take_turn(self):
                 while (self.white_moved or self.black_moved):
+                        self.white_moved = self.white_turn()
                         self.black_moved = self.black_turn()
-                        #self.white_moved = self.white_turn()
                         self.print_board()
-                        return;
 
 
         def white_turn(self):
@@ -640,39 +640,22 @@ class Othello_Board():
                                 print( str(counter) + '. '),
                                 print( move)
                                 counter +=1
-                #INPUT MOVE HERE
-                choiceI = int(input("Enter your choice: "));
-                choice = choiceI -1;
-                correct = input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
-                if(correct == 'n'):
-                        self.black_turn();
-                else:    
-                        choice = valid_moves[choice]
-                        self.effect_turn('b', choice);  ##check to see potential results
-                        #print('printing blacks :')
-                        #self.print_blacks();
-                        return False
+                return False
 
         def effect_turn(self, color, coords):
-                print('coords: ', coords);
                 row = coords[0]
                 column = coords[1]
-                self.board[20] = color
-                print('test position','\n')
-                print(self.board);
-                
-                #tl,tl_changed = self.up_left(color,coords)
-                #top,top_changed = self.up(color, coords)
-                #tr,tr_changed = self.up_right(color, coords)
-                #left,left_changed = self.left(color, coords)
-                #right,right_changed = self.right(color, coords)
-                #bl,bl_changed = self.bot_left(color, coords)
-                #bot,bot_changed = self.bot(color, coords)
-                #br,br_changed = self.bot_right(color,coords)
-                #total_changed = tl_changed + top_changed + tr_changed + left_changed + right_changed + bl_changed + bot_changed + br_changed
-                #print("total changed: " + str(total_changed))
-
-        
+                self.board[row][column] = color
+                tl,tl_changed = self.up_left(color,coords)
+                top,top_changed = self.up(color, coords)
+                tr,tr_changed = self.up_right(color, coords)
+                left,left_changed = self.left(color, coords)
+                right,right_changed = self.right(color, coords)
+                bl,bl_changed = self.bot_left(color, coords)
+                bot,bot_changed = self.bot(color, coords)
+                br,br_changed = self.bot_right(color,coords)
+                total_changed = tl_changed + top_changed + tr_changed + left_changed + right_changed + bl_changed + bot_changed + br_changed
+                print("total changed: " + str(total_changed))
 
 
 
