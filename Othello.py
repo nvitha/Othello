@@ -16,15 +16,15 @@ import random
 
 
 def get_start_state(): # just useful for building the state
-	blanks = list(' '*8) # easier for me to build these using a string then convert to 
-	blanks2 = copy.deepcopy(blanks)
-	blanks3 = copy.deepcopy(blanks)
-	blanks4 = copy.deepcopy(blanks)
-	blanks5 = copy.deepcopy(blanks)
-	blanks6 = copy.deepcopy(blanks)
-	row3 = list('   wb   ')
-	row4 = list('   bw   ')
-	return [blanks,blanks2,blanks3,row3,row4,blanks4,blanks5,blanks6]
+	x = [[' ',' ',' ',' ',' ',' ',' ',' '],
+	     [' ',' ',' ',' ',' ',' ',' ',' '],
+	     [' ',' ',' ',' ',' ',' ',' ',' '],
+	     [' ',' ',' ','w','b',' ',' ',' '],
+	     [' ',' ',' ','b','w',' ',' ',' '],
+	     [' ',' ',' ',' ',' ',' ',' ',' '],
+	     [' ',' ',' ',' ',' ',' ',' ',' '],
+	     [' ',' ',' ',' ',' ',' ',' ',' ']]
+	return x
 
 class Othello_Board():
 	board = [[]]
@@ -428,175 +428,198 @@ class Othello_Board():
 	def up_left(self,color,coords):
 		row = coords[0]
 		column = coords[1]
-
-		if color != self.board[row][column]:
-			if self.board[row-1][column-1] == ' ':
+		
+		if row == 0 or column == 0:
+			if self.board[row][column] == ' ':
 				return False, 0
-			elif self.board[row-1][column-1] == color:
-				self.board[row][column] = color
-				return True, 1
-			elif row == 0 or column == 0:
-				return False, 0
+			elif self.board[row][column] == color:
+				return True, 0
 			else:
-				color_exists,num_changed = self.up_left(color,(row-1,column-1))
-				if(color_exists):
-					self.board[row][column] = color
-					return True, num_changed+1
-				else:
-					return False, 0
+				return False, 0
 		else:
-			return True, 0
+			if self.board[row][column] == ' ':
+				return False, 0
+			if self.board[row][column] == color:
+				return True, 0		
+
+			color_found, number = self.up_left(color, (row-1,column-1))
+			if color_found:
+				self.board[row][column] = copy.deepcopy(color)
+				return True, number+1
+			else:
+				return False, 0
+
 
 	def up(self,color,coords): # recursively search upwards
 		row = coords[0]
 		column = coords[1]
-
-
-		if color != self.board[row][column]:
-			if self.board[row-1][column] == ' ':
+		
+		if row == 0 or column == 0:
+			if self.board[row][column] == ' ':
 				return False, 0
-			elif self.board[row-1][column] == color:
-				self.board[row][column] = color
-				return True, 1
-			elif row == 0 or column == 0:
-				return False, 0
+			elif self.board[row][column] == color:
+				return True, 0
 			else:
-				color_exists,num_changed = self.up(color,(row-1,column))
-				if(color_exists):
-					self.board[row][column] = color
-					return True, num_changed+1
-				else:
-					return False, 0
+				return False, 0
 		else:
-			return False, 0
+			if self.board[row][column] == ' ':
+				return False, 0
+			if self.board[row][column] == color:
+				return True, 0			
+
+			color_found, number = self.up(color, (row-1,column))
+			if color_found:
+				self.board[row][column] = copy.deepcopy(color)
+				return True, number+1
+			else:
+				return False, 0
 
 	def up_right(self, color, coords):
 		row = coords[0]
 		column = coords[1]
-		if color != self.board[row][column]:
-			if self.board[row-1][column+1] == ' ':
+		
+		if row == 0 or column == 0:
+			if self.board[row][column] == ' ':
 				return False, 0
-			elif self.board[row-1][column+1] == color:
-				self.board[row][column] = color
-				return True, 1
-			elif row == 0 or column == 0:
-				return False, 0
+			elif self.board[row][column] == color:
+				return True, 0
 			else:
-				color_exists,num_changed = self.up_right(color,(row-1,column+1))
-				if(color_exists):
-					print "color exists up right"
-					self.board[row][column] = color
-					return True, num_changed+1
-				else:
-					return False, 0
+				return False, 0
 		else:
-			return True, 0
+			if self.board[row][column] == ' ':
+				return False, 0
+			if self.board[row][column] == color:
+				return True, 0			
+
+			color_found, number = self.up_right(color, (row-1,column+1))
+			if color_found:
+				self.board[row][column] = copy.deepcopy(color)
+				return True, number+1
+			else:
+				return False, 0
+
+
 
 	def left(self, color, coords):
 		row = coords[0]
 		column = coords[1]
-		if color != self.board[row][column]:
-			if self.board[row][column-1] == ' ':
+		
+		if row == 0 or column == 0:
+			if self.board[row][column] == ' ':
 				return False, 0
-			elif self.board[row][column-1] == color:
-				self.board[row][column] = color
-				return True, 1
-			elif row == 0 or column == 0:
-				return False, 0
+			elif self.board[row][column] == color:
+				return True, 0
 			else:
-				color_exists,num_changed = self.left(color,(row,column-1))
-				if(color_exists):
-					self.board[row][column] = color
-					return True, num_changed+1
-				else:
-					return False, 0
+				return False, 0
 		else:
-			return True, 0
+			if self.board[row][column] == ' ':
+				return False, 0
+			if self.board[row][column] == color:
+				return True, 0		
+
+			color_found, number = self.left(color, (row,column-1))
+			if color_found:
+				self.board[row][column] = copy.deepcopy(color)
+				return True, number+1
+			else:
+				return False, 0
+
 
 
 	def right(self, color, coords):
 		row = coords[0]
 		column = coords[1]
-		if color != self.board[row][column]:
-			if self.board[row][column+1] == ' ':
+		
+		if row == 0 or column == 0:
+			if self.board[row][column] == ' ':
 				return False, 0
-			elif self.board[row][column+1] == color:
-				self.board[row][column] = color
-				return True, 1
-			elif row == 0 or column == 0:
-				return False, 0
+			elif self.board[row][column] == color:
+				return True, 0
 			else:
-				color_exists,num_changed = self.right(color,(row,column+1))
-				if(color_exists):
-					self.board[row][column] = color
-					return True, num_changed+1
-				else:
-					return False, 0
+				return False, 0
 		else:
-			return True, 0
+			if self.board[row][column] == ' ':
+				return False, 0
+			if self.board[row][column] == color:
+				return True, 0		
+
+			color_found, number = self.right(color, (row,column+1))
+			if color_found:
+				self.board[row][column] = copy.deepcopy(color)
+				return True, number+1
+			else:
+				return False, 0
 
 	def bot_left(self, color, coords):
 		row = coords[0]
 		column = coords[1]
-		if color != self.board[row][column]:
-			if self.board[row+1][column-1] == ' ':
+		
+		if row == 0 or column == 0:
+			if self.board[row][column] == ' ':
 				return False, 0
-			elif self.board[row+1][column-1] == color:
-				self.board[row][column] = color
-				return True, 1
-			elif row == 0 or column == 0:
-				return False, 0
+			elif self.board[row][column] == color:
+				return True, 0
 			else:
-				color_exists,num_changed = self.bot_left(color,(row+1,column-1))
-				if(color_exists):
-					self.board[row][column] = color
-					return True, num_changed+1
-				else:
-					return False, 0
+				return False, 0
 		else:
-			return True, 0
+			if self.board[row][column] == ' ':
+				return False, 0
+			if self.board[row][column] == color:
+				return True, 0		
 
+			color_found, number = self.bot_left(color, (row+1,column-1))
+			if color_found:
+				self.board[row][column] = copy.deepcopy(color)
+				return True, number+1
+			else:
+				return False, 0
 	def bot(self, color, coords):
 		row = coords[0]
 		column = coords[1]
-		if color != self.board[row][column]:
-			if self.board[row+1][column] == ' ':
+		
+		if row == 0 or column == 0:
+			if self.board[row][column] == ' ':
 				return False, 0
-			elif self.board[row+1][column] == color:
-				self.board[row][column] = color
-				return True, 1
-			elif row == 0 or column == 0:
-				return False, 0
+			elif self.board[row][column] == color:
+				return True, 0
 			else:
-				color_exists,num_changed = self.bot(color,(row+1,column))
-				if(color_exists):
-					self.board[row][column] = color
-					return True, num_changed+1
-				else:
-					return False, 0
+				return False, 0
 		else:
-			return True, 0
+			if self.board[row][column] == ' ':
+				return False, 0
+			if self.board[row][column] == color:
+				return True, 0		
+
+			color_found, number = self.bot(color, (row+1,column))
+			if color_found:
+				self.board[row][column] = copy.deepcopy(color)
+				return True, number+1
+			else:
+				return False, 0
 
 	def bot_right(self, color, coords):
 		row = coords[0]
 		column = coords[1]
-		if color != self.board[row][column]:
-			if self.board[row+1][column+1] == ' ':
+		
+		if row == 0 or column == 0:
+			if self.board[row][column] == ' ':
 				return False, 0
-			elif self.board[row+1][column+1] == color:
-				self.board[row][column] = color
-				return True, 1
-			elif row == 0 or column == 0:
-				return False, 0
+			elif self.board[row][column] == color:
+				return True, 0
 			else:
-				color_exists,num_changed = self.bot_right(color,(row+1,column+1))
-				if(color_exists):
-					self.board[row][column] = color
-					return True, num_changed+1
-				else:
-					return False, 0
+				return False, 0
 		else:
-			return True, 0
+			if self.board[row][column] == ' ':
+				return False, 0
+			if self.board[row][column] == color:
+				return True, 0		
+
+			color_found, number = self.bot_right(color, (row+1,column+1))
+			if color_found:
+				self.board[row][column] = copy.deepcopy(color)
+				return True, number+1
+			else:
+				return False, 0
 
 	def take_turn(self):
 		while (self.white_moved or self.black_moved):
@@ -667,20 +690,20 @@ class Othello_Board():
 	def effect_turn(self, color, coords):
 		row = coords[0]
 		column = coords[1]
-		print "Before Board"
-		self.print_board()
+
 
 		self.board[row][column] = color
 
-		tl,tl_changed = self.up_left(color,coords)
-		top,top_changed = self.up(color, coords)
-		tr,tr_changed = self.up_right(color, coords)
-		left,left_changed = self.left(color, coords)
-		right,right_changed = self.right(color, coords)
-		bl,bl_changed = self.bot_left(color, coords)
-		bot,bot_changed = self.bot(color, coords)
-		br,br_changed = self.bot_right(color,coords)
+		tl,tl_changed = self.up_left(color,(row-1,column-1))
+		top,top_changed = self.up(color, (row-1,column))
+		tr,tr_changed = self.up_right(color, (row-1,column+1))
+		left,left_changed = self.left(color, (row,column-1))
+		right,right_changed = self.right(color, (row,column+1))
+		bl,bl_changed = self.bot_left(color, (row+1,column-1))
+		bot,bot_changed = self.bot(color, (row+1,column))
+		br,br_changed = self.bot_right(color,(row+1,column+1))
 		total_changed = tl_changed + top_changed + tr_changed + left_changed + right_changed + bl_changed + bot_changed + br_changed
+
 		print "total changed: " + str(total_changed)
 
 
