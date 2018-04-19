@@ -14,15 +14,16 @@ import random
 
 
 def get_start_state(): # just useful for building the state
-        blanks = list(' '*8) # easier for me to build these using a string then convert to
-        blanks2 = copy.deepcopy(blanks)
-        blanks3 = copy.deepcopy(blanks)
-        blanks4 = copy.deepcopy(blanks)
-        blanks5 = copy.deepcopy(blanks)
-        blanks6 = copy.deepcopy(blanks)
-        row3 = list('   wb   ')
-        row4 = list('   bw   ')
-        return [blanks,blanks2,blanks3,row3,row4,blanks4,blanks5,blanks6]
+        x = [[' ',' ',' ',' ',' ',' ',' ',' '],
+             [' ',' ',' ',' ',' ',' ',' ',' '],
+             [' ',' ',' ',' ',' ',' ',' ',' '],
+             [' ',' ',' ','w','b',' ',' ',' '],
+             [' ',' ',' ','b','w',' ',' ',' '],
+             [' ',' ',' ',' ',' ',' ',' ',' '],
+             [' ',' ',' ',' ',' ',' ',' ',' '],
+             [' ',' ',' ',' ',' ',' ',' ',' ']]
+        return x
+
 
 class Othello_Board():
         board = [[]]
