@@ -15,15 +15,21 @@ import random
 
 def get_start_state(): # just useful for building the state
         blanks = list(' '*8) # easier for me to build these using a string then convert to
+        blanks2 = copy.deepcopy(blanks)
+        blanks3 = copy.deepcopy(blanks)
+        blanks4 = copy.deepcopy(blanks)
+        blanks5 = copy.deepcopy(blanks)
+        blanks6 = copy.deepcopy(blanks)
         row3 = list('   wb   ')
         row4 = list('   bw   ')
-        return [blanks,blanks,blanks,row3,row4,blanks,blanks,blanks]
+        return [blanks,blanks2,blanks3,row3,row4,blanks4,blanks5,blanks6]
 
 class Othello_Board():
         board = [[]]
         whites = []
         blacks = []
         player_white = False
+        player_black = False #
         white_moved = True
         black_moved = True
 
@@ -35,23 +41,36 @@ class Othello_Board():
                 self.black_moved = True
                 self.previous_board = copy.deepcopy(_board)
 
-        def side_selection(self):
+        def game_selection(self):
+                gm = input("Do you want play a human or computer (h)uman/(c)omputer\n")
+                if((gm.lower() == 'c') or (gm.lower() == 'computer')):
+                        gm = 'c'
+                        self.side_selection(gm);
+                elif((gm.lower() == 'h') or (gm.lower() == 'human')):
+                        gm = 'h'
+                        self.side_selection(gm);
+
+
+
+        def side_selection(self,gm):
                 self.player_white = True
 
-                choice = input("Do you want to be black? (y)es/(n)o\n")
+                choice = input("Do you want to be black? (do you want to go first?) (y)es/(n)o\n")
                 if ((choice.lower() == "y") or (choice.lower() == "yes")):
                         self.player_white = False
                         print ("Player is playing black")
+                        self.take_turn(gm)
                 elif ((choice.lower() == "n") or (choice.lower() == "no")):
                         self.player_white = True
-                        print ("AI is playing black")
+                        if(gm == 'c'):
+                                print ("AI is playing black")
+                        self.take_turn(gm)
                 else:
                         print ("You have not selected yes or no.")
                         print ("Exiting program now.")
                         return
 
         def print_board(self):
-                print(self.board);
                 row = 0
                 column = 0
                 print (' ', end = ' ')
@@ -593,86 +612,106 @@ class Othello_Board():
                 else:
                         return True, 0
 
-        def take_turn(self):
+        def take_turn(self,gm):
+                round = 1
                 while (self.white_moved or self.black_moved):
-                        self.black_moved = self.black_turn()
-                        #self.white_moved = self.white_turn()
-                        self.print_board()
-                        return;
+                        print('ROUND : ', round, '\n');
+                        self.black_moved = self.black_turn(gm)
+                        print('\n''TURN CHANGE!','\n')
+                        self.white_moved = self.white_turn(gm)
+                        #self.print_board()
+                        print('\n' 'white moved = ', self.white_moved, '  ', 'black moved = ', self.black_moved, '\n');
+                        round = round + 1;
+                return;
 
+        def white_turn(self, gm):
+        #print(self.player_white)
+        #if self.player_white:
+                counter = 1
+                print("Valid white moves are: (row,column)")
+                valid_moves = self.valid_moves_white()
+                if len(valid_moves) == 0:
+                         return False
 
-        def white_turn(self):
-                if self.player_white:
-                        counter = 1
-                        print("Valid white moves are: (row,column)")
-                        valid_moves = self.valid_moves_white()
-                        if len(valid_moves) == 0:
-                                return false
-                        correct = 'n'
-                        while (correct == 'n'):
-                                for move in valid_moves:
-                                        print(str(counter) + '. '),
-                                        print(move)
-                                        counter +=1
-                                choice = input('What move do you choose?\n')
-                                choice = int(choice) - 1
-                                correct = input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
+                for move in valid_moves:
+                        print( str(counter) + '. '),
+                        print( move)
+                        counter +=1
+
+                if(gm == 'h'):
+                        #INPUT MOVE HERE
+                        choiceI = int(input("Enter your choice: "));
+                        choice = choiceI -1;
+                        correct = input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
+                        if(correct == 'n'):
+                                self.white_turn(gm);
+                                return True
+                        else:              
                                 choice = valid_moves[choice]
-                else:
-                        valid_moves = self.valid_moves_white()
+                                self.effect_turn('w', choice);  ##check to see potential results
+                                return True
 
-                        if len(valid_moves) == 0:
-                                return false
 
+                elif(gm == 'c'):
                         choice = random.choice(valid_moves)
-                print("White's move is: "),
-                print(choice)
+                        print("Whites's move is: "),
+                        print(choice)
+                        self.effect_turn('w',choice)
+                        return True
 
-                self.effect_turn('w',choice)
-                return True
 
-        def black_turn(self):
-                if not self.player_white:
-                        counter = 1
-                        print("Valid black moves are: (row,column)")
-                        valid_moves = self.valid_moves_black()
-                        for move in valid_moves:
-                                print( str(counter) + '. '),
-                                print( move)
-                                counter +=1
-                #INPUT MOVE HERE
-                choiceI = int(input("Enter your choice: "));
-                choice = choiceI -1;
-                correct = input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
-                if(correct == 'n'):
-                        self.black_turn();
-                else:    
-                        choice = valid_moves[choice]
-                        self.effect_turn('b', choice);  ##check to see potential results
-                        #print('printing blacks :')
-                        #self.print_blacks();
-                        return False
+        def black_turn(self,gm):
+        #print(not self.player_white)
+        #if not self.player_white:
+                counter = 1
+                print("Valid black moves are: (row,column)")
+                valid_moves = self.valid_moves_black()
+                if len(valid_moves) == 0:
+                         return false
+
+                for move in valid_moves:
+                        print( str(counter) + '. '),
+                        print( move)
+                        counter +=1
+
+                if(gm == 'h'):
+                        #INPUT MOVE HERE
+                        choiceI = int(input("Enter your choice: "));
+                        choice = choiceI -1;
+                        correct = input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
+                        if(correct == 'n'):
+                                self.black_turn(gm);
+                        else:              
+                                choice = valid_moves[choice]
+                                self.effect_turn('b', choice);  ##check to see potential results
+                                return True
+
+
+                elif(gm == 'c'):
+                        choice = random.choice(valid_moves)
+                        print("Blacks's move is: "),
+                        print(choice)
+                        self.effect_turn('b',choice)
+                        return True
 
         def effect_turn(self, color, coords):
-                print('coords: ', coords);
                 row = coords[0]
                 column = coords[1]
-                x = self.board[row][column]
-                print(x);
-                self.board[row][column] = color
-                print('test position','\n')
-                print(self.board);
+                self.board[row][column] = color;
+                self.print_board();
+
                 
-                #tl,tl_changed = self.up_left(color,coords)
-                #top,top_changed = self.up(color, coords)
-                #tr,tr_changed = self.up_right(color, coords)
-                #left,left_changed = self.left(color, coords)
-                #right,right_changed = self.right(color, coords)
-                #bl,bl_changed = self.bot_left(color, coords)
-                #bot,bot_changed = self.bot(color, coords)
-                #br,br_changed = self.bot_right(color,coords)
-                #total_changed = tl_changed + top_changed + tr_changed + left_changed + right_changed + bl_changed + bot_changed + br_changed
-                #print("total changed: " + str(total_changed))
+                
+                tl,tl_changed = self.up_left(color,coords)
+                top,top_changed = self.up(color, coords)
+                tr,tr_changed = self.up_right(color, coords)
+                left,left_changed = self.left(color, coords)
+                right,right_changed = self.right(color, coords)
+                bl,bl_changed = self.bot_left(color, coords)
+                bot,bot_changed = self.bot(color, coords)
+                br,br_changed = self.bot_right(color,coords)
+                total_changed = tl_changed + top_changed + tr_changed + left_changed + right_changed + bl_changed + bot_changed + br_changed
+                print("total changed: " + str(total_changed))
 
         
 
@@ -684,9 +723,46 @@ class Othello_Board():
 def main():
         board = Othello_Board(get_start_state())
         board.print_board()
-        board.side_selection()
-        board.take_turn()
+        board.game_selection()
+
 
 
 if __name__ == '__main__':
         main()
+
+
+
+
+
+
+
+##        def white_turn(self, gm):
+##        #print(self.player_white)
+##        #if self.player_white:
+##                counter = 1
+##                print("Valid white moves are: (row,column)")
+##                valid_moves = self.valid_moves_white()
+##                if len(valid_moves) == 0:
+##                        return false
+##                correct = 'n'
+##                while (correct == 'n'):
+##                        for move in valid_moves:
+##                                print(str(counter) + '. '),
+##                                print(move)
+##                                counter +=1
+##                        choice = input('What move do you choose?\n')
+##                        choice = int(choice) - 1
+##                        correct = input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
+##                        choice = valid_moves[choice]
+##        else:
+##                valid_moves = self.valid_moves_white()
+##
+##                if len(valid_moves) == 0:
+##                        return false
+##
+##                choice = random.choice(valid_moves)
+##        print("White's move is: "),
+##        print(choice)
+##
+##        self.effect_turn('w',choice)
+##        return True
