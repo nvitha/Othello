@@ -33,6 +33,7 @@ class Othello_Board():
 	player_white = False
 	white_moved = True
 	black_moved = True
+	previous_states = []
 	def __init__(self, _board): #initialize the board configuration
 		self.board = copy.deepcopy(_board)
 		self.whites = [(3,3),(4,4)]
@@ -41,16 +42,20 @@ class Othello_Board():
 		self.black_moved = True
 		self.previous_board = copy.deepcopy(_board)
 
+	def restore_state_previous(self):
+		self.board = copy.deepcopy(previous_states[-1])
+		del self.previous_states[-1]
+		self.print_board
 	def side_selection(self): #select which side 
 		self.player_white = True
 
-		choice = raw_input("Do you want to be white? (y)es/(n)o\n")
+		choice = raw_input("Do you want to be black? (y)es/(n)o\n")
 		if ((choice.lower() == "y") or (choice.lower() == "yes")):
-			self.player_white = True
-			print "Player is playing white"
-		elif ((choice.lower() == "n") or (choice.lower() == "no")):
 			self.player_white = False
-			print "AI is playing white"
+			print "Player is playing black"
+		elif ((choice.lower() == "n") or (choice.lower() == "no")):
+			self.player_white = True
+			print "AI is playing black"
 		else:
 			print "You have not selected yes or no."	
 			print "Exiting program now."
@@ -621,10 +626,11 @@ class Othello_Board():
 			else:
 				return False, 0
 
+
 	def take_turn(self):
 		while (self.white_moved or self.black_moved):
-			self.white_moved = self.white_turn()
 			self.black_moved = self.black_turn()
+			self.white_moved = self.white_turn()
 			self.print_board()
 			return
 
@@ -635,7 +641,7 @@ class Othello_Board():
 			print "Valid white moves are: (row,column)"
 			valid_moves = self.valid_moves_white()
 			if len(valid_moves) == 0:
-				return false
+				return False
 			correct = 'n'
 			while (correct == 'n'):
 				for move in valid_moves:
@@ -650,7 +656,7 @@ class Othello_Board():
 			valid_moves = self.valid_moves_white()
 
 			if len(valid_moves) == 0:
-				return false			
+				return False			
 
 			choice = random.choice(valid_moves)
 		print "White's move is: ",
@@ -664,28 +670,45 @@ class Othello_Board():
 			counter = 1
 			print "Valid black moves are: (row,column)"
 			valid_moves = self.valid_moves_black()
-			for move in valid_moves:
-				print str(counter) + '. ',
-				print move
-				counter +=1
-		return False
-
-	def find_colors(self):
-		blacks = []
-		whites = []
-		row_num = 0
-		col_num = 0
-		for row in self.board:
-			for color in row:
-				if color == 'w':
-					whites.append((row_num,col_num))
-				elif color == 'b':
-					blacks.append((row_num,col_num))
-				col_num += 1
-			row_num +=1
-		return 
+			if len(valid_moves) == 0:
+				return False
+			correct = 'n'
+			while (correct == 'n'):
+				for move in valid_moves:
+					print str(counter) + '. ',
+					print move
+					counter +=1
+				choice = raw_input('What move do you choose?\n')
+				choice = int(choice)- 1
+				correct = raw_input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
+			choice = valid_moves[choice]
+		else:
+			valid_moves = self.valid_moves_black()
+			if len(valid_moves) == 0:
+				return False
+			choice = random.choice(valid_moves)
+		print "Black's move is: ",
+		print choice
 		
+		self.effect_turn('b',choice)
+		return True
 
+		
+	def find_pieces(self):
+		black_pieces = []
+		white_pieces = []
+		row = 0
+		col = 0
+		for y in self.board:
+			for x in y:
+				if x == 'w':
+					white_pieces.append((row,col))
+				elif x == 'b':
+					black_pieces.append((row,col))
+				col +=1
+			col = 0
+			row +=1
+		return black_pieces, white_pieces
 
 	def effect_turn(self, color, coords):
 		row = coords[0]
@@ -693,21 +716,27 @@ class Othello_Board():
 
 
 		self.board[row][column] = color
-
-		tl,tl_changed = self.up_left(color,(row-1,column-1))
-		top,top_changed = self.up(color, (row-1,column))
-		tr,tr_changed = self.up_right(color, (row-1,column+1))
-		left,left_changed = self.left(color, (row,column-1))
-		right,right_changed = self.right(color, (row,column+1))
-		bl,bl_changed = self.bot_left(color, (row+1,column-1))
-		bot,bot_changed = self.bot(color, (row+1,column))
-		br,br_changed = self.bot_right(color,(row+1,column+1))
+		if row > 0:
+			if column > 0:
+				tl,tl_changed = self.up_left(color,(row-1,column-1))
+			if column < 7:
+				tr,tr_changed = self.up_right(color, (row-1,column+1))				
+			top,top_changed = self.up(color, (row-1,column))
+		if column > 0:
+			left,left_changed = self.left(color, (row,column-1))
+		if column < 7:
+			right,right_changed = self.right(color, (row,column+1))
+		if row < 7:
+			if column > 0:
+				bl,bl_changed = self.bot_left(color, (row+1,column-1))
+			if column < 7:
+				br,br_changed = self.bot_right(color,(row+1,column+1))
+			bot,bot_changed = self.bot(color, (row+1,column))
 		total_changed = tl_changed + top_changed + tr_changed + left_changed + right_changed + bl_changed + bot_changed + br_changed
 
 		print "total changed: " + str(total_changed)
 
-
-#def runner(board):
+		self.blacks, self.whites = self.find_pieces()
 
 
 def main():
