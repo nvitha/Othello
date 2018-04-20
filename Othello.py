@@ -13,7 +13,7 @@ CPSC
 
 import copy
 import random
-
+import time
 
 def get_start_state(): # just useful for building the state
 	x = [[' ',' ',' ',' ',' ',' ',' ',' '],
@@ -259,7 +259,7 @@ class Othello_Board():
 				if white_piece_in_way:
 					valid_moves.append((row+1,column-1))
 
-		return valid_moves
+		return list(set(valid_moves))
 
 	def valid_moves_black(self):
 		valid_moves = []
@@ -425,8 +425,7 @@ class Othello_Board():
 				if black_piece_in_way:
 					valid_moves.append((row+1,column-1))
 
-		return valid_moves
-
+		return list(set(valid_moves))
 
 		
 
@@ -630,9 +629,10 @@ class Othello_Board():
 	def take_turn(self):
 		while (self.white_moved or self.black_moved):
 			self.black_moved = self.black_turn()
+			self.print_board()
 			self.white_moved = self.white_turn()
 			self.print_board()
-			return
+
 
 
 	def white_turn(self):
@@ -642,6 +642,11 @@ class Othello_Board():
 			valid_moves = self.valid_moves_white()
 			if len(valid_moves) == 0:
 				return False
+			i = 0
+			for move in valid_moves:
+				if self.board[move[0]][move[1]] != ' ':
+					del valid_moves[i]
+				i += 1
 			correct = 'n'
 			while (correct == 'n'):
 				for move in valid_moves:
@@ -653,10 +658,16 @@ class Othello_Board():
 				correct = raw_input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
 				choice = valid_moves[choice]
 		else:
+			print "AI is taking its turn in 5 seconds"
+			time.sleep(5)
 			valid_moves = self.valid_moves_white()
-
 			if len(valid_moves) == 0:
-				return False			
+				return False		
+			i = 0
+			for move in valid_moves:
+				if self.board[move[0]][move[1]] != ' ':
+					del valid_moves[i]
+				i += 1	
 
 			choice = random.choice(valid_moves)
 		print "White's move is: ",
@@ -672,6 +683,11 @@ class Othello_Board():
 			valid_moves = self.valid_moves_black()
 			if len(valid_moves) == 0:
 				return False
+			i = 0
+			for move in valid_moves:
+				if self.board[move[0]][move[1]] != ' ':
+					del valid_moves[i]
+				i += 1
 			correct = 'n'
 			while (correct == 'n'):
 				for move in valid_moves:
@@ -683,9 +699,16 @@ class Othello_Board():
 				correct = raw_input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
 			choice = valid_moves[choice]
 		else:
+			print "AI is taking its turn in 5 seconds"
+			time.sleep(5)
 			valid_moves = self.valid_moves_black()
 			if len(valid_moves) == 0:
 				return False
+			i = 0
+			for move in valid_moves:
+				if self.board[move[0]][move[1]] != ' ':
+					del valid_moves[i]
+				i += 1
 			choice = random.choice(valid_moves)
 		print "Black's move is: ",
 		print choice
