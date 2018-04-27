@@ -729,18 +729,37 @@ class Othello_Board():
                          return False
 
                 for move in valid_moves:
+                        row = move[0];
+                        col = move[1];
+                        ## adding * to the board to represent possible moves
+                        self.board[row][col] = "*";
                         print( str(counter) + '. '),
                         print( move)
                         counter +=1
+                self.print_board();
+
 
                 if(gm == 'h'):
                         #INPUT MOVE HERE
                         choiceI = int(input("Enter your choice: "));
                         choice = choiceI -1;
+                        choiceT = valid_moves[choice] 
+                        #clean up board before showing potential moves
+                        for move in valid_moves:
+                                row = move[0];
+                                col = move[1];
+                                self.board[row][col] = " ";
+                        #self.print_board();
+                        self.effect_turn('w', choiceT);  ##check to see potential results
+                        print(self.whites);
+                        
                         correct = input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
                         if(correct == 'n'):
+                                print(self.blacks);
+                                self.board = self.previous_board;
+                                print(self.blacks);
+                                ###change score back !!!!
                                 self.white_turn(gm);
-                                return True
                         else:              
                                 choice = valid_moves[choice]
                                 self.effect_turn('w', choice);  ##check to see potential results
@@ -765,20 +784,42 @@ class Othello_Board():
                          return False
 
                 for move in valid_moves:
+                        row = move[0];
+                        col = move[1];
+                        ## adding * to the board to represent possible moves
+                        self.board[row][col] = "*";
                         print( str(counter) + '. '),
                         print( move)
                         counter +=1
-
+                self.print_board();
+                
                 if(gm == 'h'):
                         #INPUT MOVE HERE
                         choiceI = int(input("Enter your choice: "));
                         choice = choiceI -1;
+                        choiceT = valid_moves[choice] 
+                        
+
+                        #clean up board before showing potential moves
+                        for move in valid_moves:
+                                row = move[0];
+                                col = move[1];
+                                self.board[row][col] = " ";
+                        #self.print_board();
+                        self.effect_turn('b', choiceT);  ##check to see potential results
+                        print(self.blacks);
+                        
                         correct = input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
                         if(correct == 'n'):
+                                print(self.blacks);
+                                self.board = self.previous_board;
+                                print(self.blacks);
+                                ###change score back !!!!
                                 self.black_turn(gm);
-                        else:              
-                                choice = valid_moves[choice]
-                                self.effect_turn('b', choice);  ##check to see potential results
+                        else:
+                                # MIGHT NOT NEED THIS MIGHT NEED ONLY RETURN. ALREADY CHECKED THIS CASE
+                               # choice = valid_moves[choice] 
+                               # self.effect_turn('b', choice);  ##check to see potential results
                                 return True
 
 
@@ -850,38 +891,3 @@ if __name__ == '__main__':
         main()
 
 
-
-
-
-
-
-##        def white_turn(self, gm):
-##        #print(self.player_white)
-##        #if self.player_white:
-##                counter = 1
-##                print("Valid white moves are: (row,column)")
-##                valid_moves = self.valid_moves_white()
-##                if len(valid_moves) == 0:
-##                        return false
-##                correct = 'n'
-##                while (correct == 'n'):
-##                        for move in valid_moves:
-##                                print(str(counter) + '. '),
-##                                print(move)
-##                                counter +=1
-##                        choice = input('What move do you choose?\n')
-##                        choice = int(choice) - 1
-##                        correct = input("You have chosen: " + str(valid_moves[choice]) + "\nCorrect? (y)es/(n)o\n")
-##                        choice = valid_moves[choice]
-##        else:
-##                valid_moves = self.valid_moves_white()
-##
-##                if len(valid_moves) == 0:
-##                        return false
-##
-##                choice = random.choice(valid_moves)
-##        print("White's move is: "),
-##        print(choice)
-##
-##        self.effect_turn('w',choice)
-##        return True
