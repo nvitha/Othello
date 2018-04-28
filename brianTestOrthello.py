@@ -181,7 +181,7 @@ class Othello_Board():
                                 if row > column:
                                         counter = 1
                                         for i in range(column, -1, -1):
-                                                current_item = self.board[row-counter][i-counter]
+                                                current_item = self.board[row-counter][i-1]
                                                 print(current_item)
                                                 if current_item == 'w':
                                                         print(row - counter, i - counter);
@@ -194,7 +194,7 @@ class Othello_Board():
                                 else:
                                         counter = 1
                                         for i in range(row, -1, -1):
-                                                current_item = self.board[i-counter][column-counter]
+                                                current_item = self.board[i-1][column-counter]
                                                 print(current_item)
                                                 if current_item == 'w':
                                                         print(row - counter, i - counter);
@@ -215,7 +215,7 @@ class Othello_Board():
                                 if row < column:
                                         counter = 1
                                         for i in range(column, 8, 1):
-                                                current_item = self.board[row+counter][i+counter]
+                                                current_item = self.board[row+counter][i+1]
                                                 if current_item == 'w':
                                                         print(row + counter, i + counter);
                                                         white_piece_in_way = True
@@ -227,7 +227,7 @@ class Othello_Board():
                                 else:
                                         counter = 1
                                         for i in range(row, 8, 1):
-                                                current_item = self.board[i+counter][column+counter]
+                                                current_item = self.board[i+1][column+counter]
                                                 if current_item == 'w':
                                                         print(row + counter, i + counter);
                                                         white_piece_in_way = True
@@ -246,7 +246,7 @@ class Othello_Board():
                                 if 8-row < column:
                                         counter = 1
                                         for i in range(row, 8, 1):
-                                                current_item = self.board[i+counter][column-counter]
+                                                current_item = self.board[i+1][column-counter]
                                                 if current_item == 'w':
                                                         print(row_counter, i - counter);
                                                         white_piece_in_way = True
@@ -258,7 +258,7 @@ class Othello_Board():
                                 else:
                                         counter = 1
                                         for i in range(column, 0, -1):
-                                                current_item = self.board[row+counter][i-counter]
+                                                current_item = self.board[row+counter][i-1]
                                                 if current_item == 'w':
                                                         print(row_counter, i - counter);
                                                         white_piece_in_way = True
@@ -278,7 +278,7 @@ class Othello_Board():
                                 if row < 8-column:
                                         counter = 1
                                         for i in range(row, 0, -1):
-                                                current_item = self.board[i-counter][column+counter]
+                                                current_item = self.board[i-1][column+counter]
                                                 if current_item == 'w':
                                                         print(i - counter, column + counter)
                                                         white_piece_in_way = True
@@ -290,7 +290,7 @@ class Othello_Board():
                                 else:
                                         counter = 1
                                         for i in range(column, 8, 1):
-                                                current_item = self.board[row-counter][i+counter]
+                                                current_item = self.board[row-counter][i+1]
                                                 if current_item == 'w':
                                                         print(i - counter, column + counter)
                                                         white_piece_in_way = True
