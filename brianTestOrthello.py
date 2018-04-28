@@ -187,7 +187,7 @@ class Othello_Board():
                                                         print(row - counter, i - counter);
                                                         white_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -200,7 +200,7 @@ class Othello_Board():
                                                         print(row - counter, i - counter);
                                                         white_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -220,7 +220,7 @@ class Othello_Board():
                                                         print(row + counter, i + counter);
                                                         white_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -232,7 +232,7 @@ class Othello_Board():
                                                         print(row + counter, i + counter);
                                                         white_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -251,7 +251,7 @@ class Othello_Board():
                                                         print(row+counter, i - counter);
                                                         white_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -263,7 +263,7 @@ class Othello_Board():
                                                         print(row+counter, i - counter);
                                                         white_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -283,7 +283,7 @@ class Othello_Board():
                                                         print(i - counter, column + counter)
                                                         white_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -295,7 +295,7 @@ class Othello_Board():
                                                         print(i - counter, column + counter)
                                                         white_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -392,7 +392,7 @@ class Othello_Board():
 ##                                                        print(row - counter, i - counter);
 ##                                                        white_piece_in_way = True
 ##                                                        break
-##                                                elif current_item == ' ':
+##                                                elif current_item == ' ' or current_item == '*':
 ##                                                        break
 ##                                                counter +=1
 ##
@@ -405,7 +405,7 @@ class Othello_Board():
 ##                                                        print(row - counter, i - counter);
 ##                                                        white_piece_in_way = True
 ##                                                        break
-##                                                elif current_item == ' ':
+##                                                elif current_item == ' ' or current_item == '*':
 ##                                                        break
 ##                                                counter +=1
 ##
@@ -425,7 +425,7 @@ class Othello_Board():
 ##                                                        print(row + counter, i + counter);
 ##                                                        white_piece_in_way = True
 ##                                                        break
-##                                                elif current_item == ' ':
+##                                                elif current_item == ' ' or current_item == '*':
 ##                                                        break
 ##                                                counter +=1
 ##
@@ -437,7 +437,7 @@ class Othello_Board():
 ##                                                        print(row + counter, i + counter);
 ##                                                        white_piece_in_way = True
 ##                                                        break
-##                                                elif current_item == ' ':
+##                                                elif current_item == ' ' or current_item == '*':
 ##                                                        break
 ##                                                counter +=1
 ##
@@ -456,7 +456,7 @@ class Othello_Board():
 ##                                                        print(row +counter, i - counter);
 ##                                                        white_piece_in_way = True
 ##                                                        break
-##                                                elif current_item == ' ':
+##                                                elif current_item == ' ' or current_item == '*':
 ##                                                        break
 ##                                                counter +=1
 ##
@@ -500,7 +500,7 @@ class Othello_Board():
 ##                                                        print(i - counter, column + counter)
 ##                                                        white_piece_in_way = True
 ##                                                        break
-##                                                elif current_item == ' ':
+##                                                elif current_item == ' ' or current_item == '*':
 ##                                                        break
 ##                                                counter +=1
 ##
@@ -599,7 +599,7 @@ class Othello_Board():
                                                         print(row - counter, i - counter);
                                                         black_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -612,7 +612,7 @@ class Othello_Board():
                                                         print(row - counter, i - counter);
                                                         black_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -632,7 +632,7 @@ class Othello_Board():
                                                         print(row + counter, i + counter);
                                                         black_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -644,7 +644,7 @@ class Othello_Board():
                                                         print(row + counter, i + counter);
                                                         black_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -663,7 +663,7 @@ class Othello_Board():
                                                         print(row+counter, i - counter);
                                                         black_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -675,7 +675,7 @@ class Othello_Board():
                                                         print(row+counter, i - counter);
                                                         black_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -695,7 +695,7 @@ class Othello_Board():
                                                         print(i - counter, column + counter)
                                                         black_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
@@ -707,7 +707,7 @@ class Othello_Board():
                                                         print(i - counter, column + counter)
                                                         black_piece_in_way = True
                                                         break
-                                                elif current_item == ' ':
+                                                elif current_item == ' ' or current_item == '*':
                                                         break
                                                 counter +=1
 
