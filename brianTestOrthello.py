@@ -147,7 +147,7 @@ class Othello_Board():
                         column = black_piece[1]
                         row = black_piece[0]
 
-                        print(black_piece);
+###                        print(black_piece);
 
                         # Top
                         if(row > 0 and self.board[row-1][column] == ' '):
@@ -163,7 +163,7 @@ class Othello_Board():
                                                 break
                                 if white_piece_in_way:
                                         valid_moves.append((row-1,column))
-                        print('top: ', valid_moves);
+###                       print('top: ', valid_moves);
 
                         # Left
                         if(column> 0 and self.board[row][column-1] == ' '):
@@ -176,7 +176,7 @@ class Othello_Board():
                                                 break
                                 if white_piece_in_way:
                                         valid_moves.append((row,column-1))
-                        print('left: ', valid_moves);
+###                        print('left: ', valid_moves);
                         
                         # Below
                         if(row < 7 and self.board[row+1][column] == ' '):
@@ -189,7 +189,7 @@ class Othello_Board():
                                                 break
                                 if white_piece_in_way:
                                         valid_moves.append((row+1,column))
-                        print('Below: ', valid_moves);    
+###                        print('Below: ', valid_moves);    
 
                         # Right
                         if(column < 7 and self.board[row][column+1] == ' '):
@@ -203,7 +203,7 @@ class Othello_Board():
                                 if white_piece_in_way:
                                         valid_moves.append((row,column+1))
 
-                        print('Right: ', valid_moves);
+###                        print('Right: ', valid_moves);
 
                         # Bottom Right
                         if(row < 7 and column< 7 and self.board[row+1][column+1] == ' '):
@@ -212,9 +212,9 @@ class Othello_Board():
                                         counter = 1
                                         for i in range(column, -1, -1):
                                                 current_item = self.board[row-counter][i-1]
-                                                print(current_item)
+ ###                                               print(current_item)
                                                 if current_item == 'w':
-                                                        print(row - counter, i - counter);
+###                                                        print(row - counter, i - counter);
                                                         white_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -225,9 +225,9 @@ class Othello_Board():
                                         counter = 1
                                         for i in range(row, -1, -1):
                                                 current_item = self.board[i-1][column-counter]
-                                                print(current_item)
+###                                                print(current_item)
                                                 if current_item == 'w':
-                                                        print(row - counter, i - counter);
+###                                                        print(row - counter, i - counter);
                                                         white_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -237,7 +237,7 @@ class Othello_Board():
                                 if white_piece_in_way:
                                         valid_moves.append((row+1,column+1))
 
-                        print('Bot Right: ', valid_moves);
+###                        print('Bot Right: ', valid_moves);
 
                         # Top Left
                         if(row > 0 and column >0  and self.board[row-1][column-1] == ' '):
@@ -247,7 +247,7 @@ class Othello_Board():
                                         for i in range(column, 7, 1):
                                                 current_item = self.board[row+counter][i+1]
                                                 if current_item == 'w':
-                                                        print(row + counter, i + counter);
+ ###                                                       print(row + counter, i + counter);
                                                         white_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -259,7 +259,7 @@ class Othello_Board():
                                         for i in range(row, 7, 1):
                                                 current_item = self.board[i+1][column+counter]
                                                 if current_item == 'w':
-                                                        print(row + counter, i + counter);
+###                                                        print(row + counter, i + counter);
                                                         white_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -268,7 +268,7 @@ class Othello_Board():
 
                                 if white_piece_in_way:
                                         valid_moves.append((row-1,column-1))
-                        print('top left: ', valid_moves);
+###                        print('top left: ', valid_moves);
 
                         # Top Right
                         if((row> 0 and column < 7) and (self.board[row-1][column+1] == ' ')):
@@ -278,7 +278,7 @@ class Othello_Board():
                                         for i in range(row, 7, 1):
                                                 current_item = self.board[i+1][column-counter]
                                                 if current_item == 'w':
-                                                        print(row+counter, i - counter);
+###                                                        print(row+counter, i - counter);
                                                         white_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -290,7 +290,7 @@ class Othello_Board():
                                         for i in range(column, 0, -1):
                                                 current_item = self.board[row+counter][i-counter] #changed from i -1
                                                 if current_item == 'w':
-                                                        print(row+counter, i - counter);
+ ###                                                       print(row+counter, i - counter);
                                                         white_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -300,7 +300,7 @@ class Othello_Board():
                                 if white_piece_in_way:
                                         valid_moves.append((row-1,column+1))
 
-                        print('top right: ', valid_moves);
+###                        print('top right: ', valid_moves);
 
                         # Bottom Left
                         if(row < 7 and column > 0 and self.board[row+1][column-1] == ' '):
@@ -310,7 +310,7 @@ class Othello_Board():
                                         for i in range(row, 0, -1):
                                                 current_item = self.board[i-1][column+counter]
                                                 if current_item == 'w':
-                                                        print(i - counter, column + counter)
+###                                                        print(i - counter, column + counter)
                                                         white_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -322,7 +322,7 @@ class Othello_Board():
                                         for i in range(column, 7, 1):
                                                 current_item = self.board[row-counter][i+1]
                                                 if current_item == 'w':
-                                                        print(i - counter, column + counter)
+###                                                        print(i - counter, column + counter)
                                                         white_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -331,12 +331,12 @@ class Othello_Board():
 
                                 if white_piece_in_way:
                                         valid_moves.append((row+1,column-1))
-                        print('bottom left: ', valid_moves);
+###                        print('bottom left: ', valid_moves);
 
-                print(valid_moves)
+###                print(valid_moves)
                 i = 0;
                 for move in valid_moves:
-                        print(self.board[move[0]][move[1]])
+###                        print(self.board[move[0]][move[1]])
                         if(self.board[move[0]][move[1]] != " "):
                                 del valid_moves[i]
                         i += 1;
@@ -354,7 +354,7 @@ class Othello_Board():
                         column = white_piece[1]
                         row = white_piece[0]
 
-                        print(white_piece);
+###                        print(white_piece);
 
                         # Top
                         if(row > 0 and self.board[row-1][column] == ' '):
@@ -370,7 +370,7 @@ class Othello_Board():
                                                 break
                                 if black_piece_in_way:
                                         valid_moves.append((row-1,column))
-                        print('top: ', valid_moves);
+ ###                       print('top: ', valid_moves);
 
                         # Left
                         if(column> 0 and self.board[row][column-1] == ' '):
@@ -383,7 +383,7 @@ class Othello_Board():
                                                 break
                                 if black_piece_in_way:
                                         valid_moves.append((row,column-1))
-                        print('left: ', valid_moves);
+###                        print('left: ', valid_moves);
                         
                         # Below
                         if(row < 7 and self.board[row+1][column] == ' '):
@@ -396,7 +396,7 @@ class Othello_Board():
                                                 break
                                 if black_piece_in_way:
                                         valid_moves.append((row+1,column))
-                        print('Below: ', valid_moves);    
+###                        print('Below: ', valid_moves);    
 
                         # Right
                         if(column < 7 and self.board[row][column+1] == ' '):
@@ -410,7 +410,7 @@ class Othello_Board():
                                 if black_piece_in_way:
                                         valid_moves.append((row,column+1))
 
-                        print('Right: ', valid_moves);
+###                        print('Right: ', valid_moves);
 
                         # Bottom Right
                         if(row < 7 and column< 7 and self.board[row+1][column+1] == ' '):
@@ -419,9 +419,9 @@ class Othello_Board():
                                         counter = 1
                                         for i in range(column, -1, -1):
                                                 current_item = self.board[row-counter][i-1]
-                                                print(current_item)
+###                                                print(current_item)
                                                 if current_item == 'b':
-                                                        print(row - counter, i - counter);
+###                                                        print(row - counter, i - counter);
                                                         black_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -432,9 +432,9 @@ class Othello_Board():
                                         counter = 1
                                         for i in range(row, -1, -1):
                                                 current_item = self.board[i-1][column-counter]
-                                                print(current_item)
+ ###                                               print(current_item)
                                                 if current_item == 'b':
-                                                        print(row - counter, i - counter);
+ ###                                                       print(row - counter, i - counter);
                                                         black_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -444,7 +444,7 @@ class Othello_Board():
                                 if black_piece_in_way:
                                         valid_moves.append((row+1,column+1))
 
-                        print('Bot Right: ', valid_moves);
+    ###                    print('Bot Right: ', valid_moves);
 
                         # Top Left
                         if(row > 0 and column >0  and self.board[row-1][column-1] == ' '):
@@ -454,7 +454,7 @@ class Othello_Board():
                                         for i in range(column, 7, 1):
                                                 current_item = self.board[row+counter][i+1]
                                                 if current_item == 'b':
-                                                        print(row + counter, i + counter);
+###                                                        print(row + counter, i + counter);
                                                         black_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -466,7 +466,7 @@ class Othello_Board():
                                         for i in range(row, 7, 1):
                                                 current_item = self.board[i+1][column+counter]
                                                 if current_item == 'b':
-                                                        print(row + counter, i + counter);
+###                                                        print(row + counter, i + counter);
                                                         black_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -475,7 +475,7 @@ class Othello_Board():
 
                                 if black_piece_in_way:
                                         valid_moves.append((row-1,column-1))
-                        print('top left: ', valid_moves);
+###                        print('top left: ', valid_moves);
 
                         # Top Right
                         if(row> 0 and column < 7 and self.board[row-1][column+1] == ' '):
@@ -485,7 +485,7 @@ class Othello_Board():
                                         for i in range(row, 7, 1):
                                                 current_item = self.board[i+1][column-counter]
                                                 if current_item == 'b':
-                                                        print(row+counter, i - counter);
+ ###                                                       print(row+counter, i - counter);
                                                         black_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -497,7 +497,7 @@ class Othello_Board():
                                         for i in range(column, 0, -1):
                                                 current_item = self.board[row+counter][i-counter] #changed from (i-1)
                                                 if current_item == 'b':
-                                                        print(row+counter, i - counter);
+  ###                                                      print(row+counter, i - counter);
                                                         black_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -507,7 +507,7 @@ class Othello_Board():
                                 if black_piece_in_way:
                                         valid_moves.append((row-1,column+1))
 
-                        print('top right: ', valid_moves);
+ ###                       print('top right: ', valid_moves);
 
                         # Bottom Left
                         if(row < 7 and column > 0 and self.board[row+1][column-1] == ' '):
@@ -517,7 +517,7 @@ class Othello_Board():
                                         for i in range(row, 0, -1):
                                                 current_item = self.board[i-1][column+counter]
                                                 if current_item == 'b':
-                                                        print(i - counter, column + counter)
+    ###                                                    print(i - counter, column + counter)
                                                         black_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -529,7 +529,7 @@ class Othello_Board():
                                         for i in range(column, 7, 1):
                                                 current_item = self.board[row-counter][i+1]
                                                 if current_item == 'b':
-                                                        print(i - counter, column + counter)
+ ###                                                       print(i - counter, column + counter)
                                                         black_piece_in_way = True
                                                         break
                                                 elif current_item == ' ' or current_item == '*':
@@ -538,17 +538,17 @@ class Othello_Board():
 
                                 if black_piece_in_way:
                                         valid_moves.append((row+1,column-1))
-                        print('bottom left: ', valid_moves);
+    ###                    print('bottom left: ', valid_moves);
 
-                print(valid_moves)
+       ###         print(valid_moves)
                 i = 0;
                 for move in valid_moves:
-                        print(self.board[move[0]][move[1]])
+          ###              print(self.board[move[0]][move[1]])
                         if(self.board[move[0]][move[1]] != " "):
                                 del valid_moves[i]
                         i += 1;
 
-                print(valid_moves);
+          ###      print(valid_moves);
 ##                print(list(valid_moves));
 ##                print(list(set(valid_moves)))
                 return list(set(valid_moves));
@@ -772,7 +772,6 @@ class Othello_Board():
                                         return;
 
                 elif(b == 'h' and w == 'h'):
-                        print('test');
                         while (self.white_moved or self.black_moved):
                                 print('ROUND : ', round, '\n');
                                 self.black_moved = self.black_turn('h')
@@ -789,7 +788,6 @@ class Othello_Board():
                 
 
                 elif(choice == 'y'):
-                        print('test');
                         while (self.white_moved or self.black_moved):
                                 print('ROUND : ', round, '\n');
                                 self.black_moved = self.black_turn('h')
@@ -804,7 +802,6 @@ class Othello_Board():
                                         return;
 
                 elif(choice == 'n'):
-                        print('test2')
                         while (self.white_moved or self.black_moved):
                                 print('ROUND : ', round, '\n');
                                 self.black_moved = self.black_turn('c')
@@ -934,7 +931,6 @@ class Othello_Board():
 
 
         def black_turn(self,gm):
-                print(gm);
 ##                print(self.blacks,'\n');
                 counter = 1
                 print("Valid black moves are: (row,column)")
