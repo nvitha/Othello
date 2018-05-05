@@ -11,6 +11,9 @@ CPSC 427
 '''
 import copy
 import random
+from multiprocessing import Process, Queue
+import time
+import sys
 
 
 def get_start_state(): # just useful for building the state
@@ -41,8 +44,8 @@ class Othello_Board():
                 self.previous_board = copy.deepcopy(_board)
                 self.whites = [(3,3),(4,4)]
                 self.blacks = [(3,4),(4,3)]
-##                self.whites = [(0, 0), (0, 1), (0, 2), (0, 4), (0, 5), (0, 6), (0, 7), (1, 0), (1, 4), (1, 5), (1, 6), (2, 0), (2, 4), (2, 5), (3, 0), (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (4, 0), (4, 2), (4, 3), (4, 5), (4, 6), (4, 7), (5, 0), (5, 2), (5, 4), (5, 5), (5, 6), (5, 7), (6, 0), (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6), (6, 7), (7, 0), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7)];
-##                self.blacks = [(0, 3), (1, 1), (1, 2), (1, 3), (1, 7), (2, 1), (2, 2), (2, 3), (2, 6), (2, 7), (3, 1), (3, 2), (4, 1), (4, 4), (5, 1), (7, 1)];
+                #self.whites = [(0, 0), (0, 1), (0, 2), (0, 4), (0, 5), (0, 6), (0, 7), (1, 0), (1, 4), (1, 5), (1, 6), (2, 0), (2, 4), (2, 5), (3, 0), (3, 3), (3, 4), (3, 5), (3, 6), (3, 7), (4, 0), (4, 2), (4, 3), (4, 5), (4, 6), (4, 7), (5, 0), (5, 2), (5, 4), (5, 5), (5, 6), (5, 7), (6, 0), (6, 1), (6, 2), (6, 3), (6, 4), (6, 5), (6, 6), (6, 7), (7, 0), (7, 3), (7, 4), (7, 5), (7, 6), (7, 7)];
+                ##self.blacks = [(0, 3), (1, 1), (1, 2), (1, 3), (1, 7), (2, 1), (2, 2), (2, 3), (2, 6), (2, 7), (3, 1), (3, 2), (4, 1), (4, 4), (5, 1), (7, 1)];
                 self.white_moved = True
                 self.black_moved = True
 
@@ -64,13 +67,13 @@ class Othello_Board():
 
 
         def game_selection(self):
-                b = input("Do you want  black to be a human or computer (h)uman/(c)omputer\n")
+                b = input("Do you want player1 to be a human or computer (h)uman/(c)omputer\n")
                 if((b.lower() == 'c') or (b.lower() == 'computer')):
                         b = 'c'
                 elif((b.lower() == 'h') or (b.lower() == 'human')):
                         b = 'h'
 
-                w = input("Do you want  white to be a human or computer (h)uman/(c)omputer\n")
+                w = input("Do you want player2 to be a human or computer (h)uman/(c)omputer\n")
                 if((w.lower() == 'c') or (w.lower() == 'computer')):
                         w = 'c'
                 elif((w.lower() == 'h') or (w.lower() == 'human')):
@@ -86,7 +89,7 @@ class Othello_Board():
                         self.take_turn(b,w,choice);
                         return
                 elif(b == 'h' and w == 'h'):
-                        choice = input("Do you want to be black? (do you want to go first?) (y)es/(n)o\n")
+                        choice = input("Do you want player1 to be black? (do you want to go first?) (y)es/(n)o\n")
                         if ((choice.lower() == "y") or (choice.lower() == "yes")):
                                 print ("Player is playing black")
                                 self.take_turn(b,w,choice)
@@ -288,7 +291,7 @@ class Othello_Board():
                                 else:
                                         counter = 1
                                         for i in range(column, 0, -1):
-                                                current_item = self.board[row+counter][i-counter] #changed from i -1
+                                                current_item = self.board[row+counter][i-1] #changed from i -1
                                                 if current_item == 'w':
  ###                                                       print(row+counter, i - counter);
                                                         white_piece_in_way = True
@@ -341,7 +344,7 @@ class Othello_Board():
                                 del valid_moves[i]
                         i += 1;
 
-                print(valid_moves);
+##                print(valid_moves);
 ##                print(list(valid_moves));
 ##                print(list(set(valid_moves)))
                 return list(set(valid_moves));
@@ -495,7 +498,7 @@ class Othello_Board():
                                 else:
                                         counter = 1
                                         for i in range(column, 0, -1):
-                                                current_item = self.board[row+counter][i-counter] #changed from (i-1)
+                                                current_item = self.board[row+counter][i-1] #changed from (i-1)
                                                 if current_item == 'b':
   ###                                                      print(row+counter, i - counter);
                                                         black_piece_in_way = True
@@ -821,9 +824,10 @@ class Othello_Board():
         #print(self.player_white)
         #if self.player_white:
                 counter = 1
-                print("Valid white moves are: (row,column)")
+                #print("Valid white moves are: (row,column)")
                 valid_moves = self.valid_moves_white()
                 if len(valid_moves) == 0:
+                         print("White cannot take a move")
                          return False
 
                 self.prev_blacks = self.blacks
@@ -845,7 +849,6 @@ class Othello_Board():
                         while(True):
                                 #INPUT MOVE HERE
                                 choice_string = input ("Enter your choice: ")
-                                broken = False
                                 try:
                                         choiceI = int(choice_string)
                                 except:
@@ -853,9 +856,12 @@ class Othello_Board():
                                         choiceI = 0
                                         choice_string = ""
                                         continue
-                                choice = choiceI -1;
-                                choiceT = valid_moves[choice] 
 
+                                choice = choiceI -1;
+                                if choice >= len(valid_moves) or choice < 0:
+                                        print("Not a valid move")
+                                        continue
+                                choiceT = valid_moves[choice] 
                                 #clean up board before showing potential moves
                                 for move in valid_moves:
                                         row = move[0];
@@ -891,10 +897,13 @@ class Othello_Board():
 
                 elif(gm == 'c'):
                         while(True):
+                                start_time = time.time()
                                 choice = random.choice(valid_moves)
                                 choiceS = str(choice);
                                 print("White's move is: "),
                                 print(choice)
+                                print("Elapsed time " + str(round((time.time()-start_time),3)))
+
                                 
                                 for move in valid_moves:
                                         row = move[0];
@@ -930,12 +939,14 @@ class Othello_Board():
 
 
 
+
         def black_turn(self,gm):
-##                print(self.blacks,'\n');
+##              print(self.blacks,'\n');
                 counter = 1
-                print("Valid black moves are: (row,column)")
+                #print("Valid black moves are: (row,column)")
                 valid_moves = self.valid_moves_black()
                 if len(valid_moves) == 0:
+                         print("Black cannot make a move")
                          return False
 
                 self.prev_blacks = self.blacks
@@ -964,7 +975,11 @@ class Othello_Board():
                                         choiceI = 0
                                         choice_string = ""
                                         continue
+
                                 choice = choiceI -1;
+                                if choice >= len(valid_moves) or choice < 0:
+                                        print("Not a valid move")
+                                        continue
                                 choiceT = valid_moves[choice] 
                                 
 
@@ -1003,11 +1018,12 @@ class Othello_Board():
 
                 elif(gm == 'c'):
                         while(True):
+                                start_time = time.time()
                                 choice = random.choice(valid_moves)
                                 choiceS = str(choice);
                                 print("Blacks's move is: "),
                                 print(choice)
-                                
+                                print("Elapsed time " + str(round((time.time()-start_time),3)))                                
                                 #clean up board before showing potential moves
                                 for move in valid_moves:
                                         row = move[0];
@@ -1105,6 +1121,15 @@ class Othello_Board():
                 self.blacks, self.whites = self.find_pieces()
                 self.print_board()
 
+
+def timer():
+
+        i = 0
+        while(True):
+                sys.stdout.write("\r")
+                sys.stdout.write("{:2d}".format(i))
+                time.sleep(1)
+                sys.stdout.flush()
 
 
 def main():
