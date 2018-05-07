@@ -31,19 +31,18 @@ def get_start_state(): # just useful for building the state
 
 
 class Othello_Board():
-        board = [[]]
-        whites = []
-        blacks = []
-        prev_whites = []
-        prev_blacks = []
-        player_white = False
-        player_black = False #
-        white_moved = True
-        black_moved = True
-        prior_board_state_history = []
-        valid_move_list = []
-
         def __init__(self, _board):
+                self.board = [[]]
+                self.whites = []
+                self.blacks = []
+                self.prev_whites = []
+                self.prev_blacks = []
+                self.player_white = False
+                self.player_black = False
+                self.white_moved = True
+                self.black_moved = True
+                self.prior_board_state_history = []
+                self.valid_move_list = []
                 self.board = copy.deepcopy(_board)
                 self.previous_board = copy.deepcopy(_board)
                 self.whites = [(3,3),(4,4)]
@@ -150,7 +149,7 @@ class Othello_Board():
 
         
         def get_branches(self, color):
-                print(self.valid_move_list)
+                #print(self.valid_move_list)
                 return(self.valid_move_list)
 
 
@@ -1127,7 +1126,6 @@ class Othello_Board():
                 row = coords[0]
                 column = coords[1]
 
-
                 self.board[row][column] = color
                 total_changed = tl_changed = top_changed = tr_changed = left_changed = right_changed = bl_changed = bot_changed = br_changed = 0;
                 
@@ -1152,7 +1150,6 @@ class Othello_Board():
 
 
 
-
 def alpha_beta(board_state, color):
         depth = 5
         choices = maxFirst(board_state, 'null', 'null', color, color, depth)
@@ -1174,7 +1171,7 @@ def maxFirst(board_state, alpha, beta, player_color, cur_color, depth):
         branches = board_state.get_branches(cur_color)
         branch_value_list = []
         board_copies = []
-        #print(branches)
+        print(branches)
         for branch in branches:
                  board_copies.append(copy.deepcopy(board_state))
 
@@ -1184,6 +1181,7 @@ def maxFirst(board_state, alpha, beta, player_color, cur_color, depth):
                  #print(branch)
                  copy_state = board_copies[i]
                  copy_state.make_turn(cur_color,branch)
+                 copy_state.get_branches(cur_color)
                  v1 = minVal(copy_state, alpha, beta, player_color, next_color, depth)
                  choice_scores.append((branch,v1))
                  if v == 'null' or v1 > v:
@@ -1205,7 +1203,6 @@ def maxVal(board_state, alpha, beta, player_color, cur_color, depth):
                 score = len(board_state.whites) - len(board_state.blacks)
                 next_color = 'b'
         if depth == 0:
-                #print("depth 0")
                 return score
 
         depth -= 1
@@ -1241,7 +1238,7 @@ def minVal(board_state, alpha, beta, player_color, cur_color, depth):
                 score = len(board_state.whites) - len(board_state.blacks)
                 next_color = 'b'
         if depth == 0:
-                #print("depth 0")
+                print(score)
                 return score
 
         depth -= 1
