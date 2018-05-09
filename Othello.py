@@ -3,11 +3,7 @@
 Daniel
 Brian Ramaswami
 Nicholas Vitha
-
-
 CPSC 427
-
-
 
 '''
 import copy
@@ -1110,6 +1106,13 @@ class Othello_Board():
 
                 self.print_board()
 
+        def get_score(self,color):
+                self.blacks, self.whites = self.find_pieces()
+                if color == 'w':
+                        return(len(self.whites) - len(self.blacks))
+                else:
+                        return(len(self.blacks) - len(self.whites))
+
         def make_turn(self, color, coords):
                 row = coords[0]
                 column = coords[1]
@@ -1162,18 +1165,28 @@ def maxFirst(board_state, alpha, beta, player_color, cur_color, depth):
         branches = copyboard.get_branches(cur_color)
         branch_value_list = []
         board_copies = []
+        i = 0
         for branch in branches:
+                if branch == (0,0) or branch == (0,7) or branch == (7,0) or branch == (7,7):
+                        return((branch,0))
                 append_board = copy.deepcopy(board_state)
                 append_board.strip_asts()
                 board_copies.append(append_board)
-        choice_scores = []
 
-        i = 0
-        for branch in branches:
                 copy_state = board_copies[i]
                 copy_state.make_turn(cur_color, branch)
                 copy_state.get_branches(cur_color)
                 copy_state.strip_asts()
+                branch_value_list.append(copy_state.get_score(player_color))
+                i += 1
+        board_copies = [x for y, x in sorted(zip(branch_value_list,board_copies), key=lambda pair: pair[0])]
+        board_copies.reverse()
+        choice_scores = []
+
+        j = 0
+
+        for branch in branches:
+                copy_state = board_copies[j]
                 v1 = minVal(copy_state, alpha, beta, player_color, next_color, depth)
                 choice_scores.append((branch, v1))
                 if v == 'null' or v1 > v:
@@ -1184,7 +1197,7 @@ def maxFirst(board_state, alpha, beta, player_color, cur_color, depth):
                                 return((branch,v1))
                 if alpha == 'null' or v1 > alpha:
                         alpha = v1
-                i += 1
+                j += 1
         #print("MaxFirst return")
         return((branch,v))
 
@@ -1198,8 +1211,7 @@ def maxVal(board_state, alpha, beta, player_color, cur_color, depth):
                 score = len(board_state.whites) - len(board_state.blacks)
                 next_color = 'b'
         if depth == 0:
-                #print("maxval return score")
-                #print(score)
+
                 return score
 
         depth -= 1
@@ -1208,31 +1220,36 @@ def maxVal(board_state, alpha, beta, player_color, cur_color, depth):
         branches = board_state.get_branches(cur_color)
         branch_value_list = []
         board_copies = []
-        #print("maxval print:")
-        #print(branches)
-        #print(score)
+        i = 0
         for branch in branches:
                 append_board = copy.deepcopy(board_state)
                 append_board.strip_asts()
                 board_copies.append(append_board)
-        i = 0
-        for branch in branches:
+
                 copy_state = board_copies[i]
                 copy_state.make_turn(cur_color, branch)
+                copy_state.get_branches(cur_color)
                 copy_state.strip_asts()
+                branch_value_list.append(copy_state.get_score(player_color))
+                i += 1
+
+        board_copies = [x for y, x in sorted(zip(branch_value_list,board_copies), key=lambda pair: pair[0])]
+        board_copies.reverse()
+
+        j = 0
+        for branch in branches:
+                copy_state = board_copies[j]
                 v1 = minVal(copy_state, alpha, beta, player_color, next_color, depth)
                 if v == 'null' or v1 > v:
                         v = v1
                 if beta != 'null':
                         if v1 >= beta:
-                                #print("maxval return v prune")
-                                #print(v)
+
                                 return v
                 if alpha == 'null' or v1 > alpha:
                         alpha = v1
-                i += 1
-        #print("maxval return v")
-        #print(v)
+                j += 1
+
         return v
 
 
@@ -1254,33 +1271,35 @@ def minVal(board_state, alpha, beta, player_color, cur_color, depth):
         branches = board_state.get_branches(cur_color)
         branch_value_list = []
         board_copies = []
-        #print("minval print")
-        #print(branches)
-        #print(score)
+        i = 0
         for branch in branches:
                 append_board = copy.deepcopy(board_state)
                 append_board.strip_asts()
-                board_copies.append(copy.deepcopy(board_state))
-        i = 0
+                board_copies.append(append_board)
+
+                copy_state = board_copies[i]
+                copy_state.make_turn(cur_color, branch)
+                copy_state.get_branches(cur_color)
+                copy_state.strip_asts()
+                branch_value_list.append(copy_state.get_score(player_color))
+                i += 1
+        board_copies = [x for y, x in sorted(zip(branch_value_list,board_copies), key=lambda pair: pair[0])]
+        board_copies.reverse()
+        j = 0
 
         v = float("-inf")
         for branch in branches:
-                copy_state = board_copies[i]
-                copy_state.make_turn(cur_color, branch)
-                copy_state.strip_asts()
+                copy_state = board_copies[j]
                 v1 = maxVal(copy_state, alpha, beta, player_color, next_color, depth)
                 if v == 'null' or v1 < v:
                         v = v1
                 if alpha != 'null':
                         if v1 <= alpha:
-                                #print("minval return v prune")
-                                #print(v)
+
                                 return v
                 if beta == 'null' or v1 < beta:
                         beta = v1
-                i += 1
-        #print("minval return v")
-        #print(v)
+                j += 1
         return v
 
 
