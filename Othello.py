@@ -1,6 +1,6 @@
 #!/bin/python3
 '''
-Daniel
+Daniel Gallab
 Brian Ramaswami
 Nicholas Vitha
 CPSC 427
@@ -51,6 +51,16 @@ class Othello_Board():
                 self.board = copy.deepcopy(previous_states[-1])
                 del self.previous_states[-1]
                 self.print_board'''''
+
+        def strip_upper(self):
+                i = 0
+                j = 0
+                for row in self.board:
+                        j=0
+                        for character in row:
+                                self.board[i][j] = self.board[i][j].lower()
+                                j += 1
+                        i += 1
 
         def strip_asts(self):
                 i = 0
@@ -585,7 +595,7 @@ class Othello_Board():
 
                         color_found, number = self.up_left(color, (row - 1, column - 1))
                         if color_found:
-                                self.board[row][column] = copy.deepcopy(color)
+                                self.board[row][column] = copy.deepcopy(color.upper())
                                 return True, number + 1
                         else:
                                 return False, 0
@@ -609,7 +619,7 @@ class Othello_Board():
 
                         color_found, number = self.up(color, (row - 1, column))
                         if color_found:
-                                self.board[row][column] = copy.deepcopy(color)
+                                self.board[row][column] = copy.deepcopy(color.upper())
                                 return True, number + 1
                         else:
                                 return False, 0
@@ -633,7 +643,7 @@ class Othello_Board():
 
                         color_found, number = self.up_right(color, (row - 1, column + 1))
                         if color_found:
-                                self.board[row][column] = copy.deepcopy(color)
+                                self.board[row][column] = copy.deepcopy(color.upper())
                                 return True, number + 1
                         else:
                                 return False, 0
@@ -657,7 +667,7 @@ class Othello_Board():
 
                         color_found, number = self.left(color, (row, column - 1))
                         if color_found:
-                                self.board[row][column] = copy.deepcopy(color)
+                                self.board[row][column] = copy.deepcopy(color.upper())
                                 return True, number + 1
                         else:
                                 return False, 0
@@ -681,7 +691,7 @@ class Othello_Board():
 
                         color_found, number = self.right(color, (row, column + 1))
                         if color_found:
-                                self.board[row][column] = copy.deepcopy(color)
+                                self.board[row][column] = copy.deepcopy(color.upper())
                                 return True, number + 1
                         else:
                                 return False, 0
@@ -705,7 +715,7 @@ class Othello_Board():
 
                         color_found, number = self.bot_left(color, (row + 1, column - 1))
                         if color_found:
-                                self.board[row][column] = copy.deepcopy(color)
+                                self.board[row][column] = copy.deepcopy(color.upper())
                                 return True, number + 1
                         else:
                                 return False, 0
@@ -729,7 +739,7 @@ class Othello_Board():
 
                         color_found, number = self.bot(color, (row + 1, column))
                         if color_found:
-                                self.board[row][column] = copy.deepcopy(color)
+                                self.board[row][column] = copy.deepcopy(color.upper())
                                 return True, number + 1
                         else:
                                 return False, 0
@@ -753,7 +763,7 @@ class Othello_Board():
 
                         color_found, number = self.bot_right(color, (row + 1, column + 1))
                         if color_found:
-                                self.board[row][column] = copy.deepcopy(color)
+                                self.board[row][column] = copy.deepcopy(color.upper())
                                 return True, number + 1
                         else:
                                 return False, 0
@@ -847,6 +857,7 @@ class Othello_Board():
                         counter += 1
                 print('\nWHITES TURN: \n');
                 self.print_board();
+                self.strip_upper()
 
                 if (gm == 'h'):
                         while (True):
@@ -1091,9 +1102,9 @@ class Othello_Board():
                 col = 0
                 for y in self.board:
                         for x in y:
-                                if x == 'w':
+                                if x.lower() == 'w':
                                         white_pieces.append((row, col))
-                                elif x == 'b':
+                                elif x.lower() == 'b':
                                         black_pieces.append((row, col))
                                 col += 1
                         col = 0
@@ -1105,7 +1116,7 @@ class Othello_Board():
                 print("total changed: " + str(total_changed))
 
                 self.print_board()
-
+                self.strip_upper()
         def get_score(self,color):
                 self.blacks, self.whites = self.find_pieces()
                 if color == 'w':
@@ -1114,10 +1125,11 @@ class Othello_Board():
                         return(len(self.blacks) - len(self.whites))
 
         def make_turn(self, color, coords):
+                self.strip_upper()
                 row = coords[0]
                 column = coords[1]
 
-                self.board[row][column] = color
+                self.board[row][column] = color.upper()
                 tl_changed = top_changed = tr_changed = left_changed = right_changed = bl_changed = bot_changed = 0
                 br_changed = 0
 
@@ -1143,7 +1155,7 @@ class Othello_Board():
 
 
 def alpha_beta(board_state, color):
-        depth = 3
+        depth = 4
         choice = maxFirst(board_state, 'null', 'null', color, color, depth)
         #print(choice)
         return choice
@@ -1211,7 +1223,6 @@ def maxVal(board_state, alpha, beta, player_color, cur_color, depth):
                 score = len(board_state.whites) - len(board_state.blacks)
                 next_color = 'b'
         if depth == 0:
-
                 return score
 
         depth -= 1
